@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Indulge in artisanal delights at iBakery. Explore a delectable range of freshly baked goods, from mouthwatering pastries to custom-designed cakes. Savor the finest ingredients and craftsmanship, bringing you a delightful culinary experience. Visit us today for a taste of heavenly treats and warm, inviting ambiance.">
+<meta name="keywords" content="bakery, artisanal pastries, custom cakes, fresh bread, gourmet desserts, sweet treats, baked goods, Birmingham bakery, local bakery, iBakery">
+<meta name="author" content="iBakery">
+<meta name="author" content="Angela Iredia">
+
+<!-- change image link later -->
+<meta property="og:image" content=" ">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<title>iBakery - Homepage</title>
+
+<link rel="stylesheet" type="text/css" href="styles/design.css" /> 
+
+<!-- Ajax and Javascript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+
+
+
+<script>	
+    var page = 1;	
+    
+    function getArticle(id) {
+    console.log("https://content.guardianapis.com/search?id="+ id + "&show-fields=all&api-key=e3d6b750-dba8-4d96-a303-c3bf3a31bb3c&page=" + page + "&order-by=newest" + "section=food");
+    $.getJSON({
+                url: "https://content.guardianapis.com/"+ id + "?show-fields=all&api-key=e3d6b750-dba8-4d96-a303-c3bf3a31bb3c", 
+                error: function(xhr){console.log("An error occured: " + xhr.status + " " + xhr.statusText);},
+                success:function(data){
+                  var content = data.response.content;
+                  console.log(content.fields.thumbnail);
+                  console.log(content.fields.trailText);
+                  $('#article .card-img-top').attr("src", content.fields.thumbnail);
+                  $('#article .headline').html( content.fields.headline);
+                  $('#article .trailText').html(content.fields.trailText);
+                  $('#article .firstPublicationDate').html(content.fields.firstPublicationDate);
+                  $('#article .bodyText').html(content.fields.body);
+    }
+    });
+    
+        
+    $('.card-group').hide(); 
+    $('.game-card-group').hide();
+    $('#article').show();
+    $('#scroll').hide();
+    $('#subtitle').hide();
+    $('#subtitle1').hide();
+    $('#subtitle3').hide();
+    }
+
+    function getContent(pageDirection){
+if (pageDirection=="next"){
+page++ ;
+$('#pageNo').html( page);
+}
+	
+if (pageDirection=="previous" && page >"1"){
+	page--;
+	$('#pageNo').html( page);
+}
+	        $.getJSON({
+            url: "https://content.guardianapis.com/search?page-size=3&show-fields=all&api-key=e3d6b750-dba8-4d96-a303-c3bf3a31bb3c&page=" + page + "&order-by=newest" + "&section=food", 
+            error: function(xhr){console.log("An error occured: " + xhr.status + " " + xhr.statusText);},
+            success:function(data){
+              var results = data.response.results;
+				$('.c1 .card-img-top').attr("src", results[0].fields.thumbnail);
+				$('.c1 .headline').html( results[0].fields.headline);
+				$('.c1 .trailText').html(results[0].fields.trailText);
+				$('.c1 .firstPublicationDate').html(results[0].fields.firstPublicationDate);
+				$('.c1').attr("data-id", results[0].id);
+				
+				$('.c2 .card-img-top').attr("src", results[1].fields.thumbnail);
+				$('.c2 .headline').html( results[1].fields.headline);
+				$('.c2 .trailText').html(results[1].fields.trailText);
+				$('.c2 .firstPublicationDate').html(results[1].fields.firstPublicationDate);
+				$('.c2').attr("data-id", results[1].id);
+				
+				$('.c3 .card-img-top').attr("src", results[2].fields.thumbnail);
+				$('.c3 .headline').html( results[2].fields.headline);
+				$('.c3 .trailText').html(results[2].fields.trailText);
+				$('.c3 .firstPublicationDate').html(results[2].fields.firstPublicationDate);
+				$('.c3').attr("data-id", results[2].id);
+				
+            }
+			  
+           });
+	
+
+}
+	
+	
+$(document).ready(function(){
+getContent("");
+	
+$("#next").click(function(){
+ getContent("next");
+	return false;
+});
+	
+$("#prev").click(function(){
+ getContent("previous");
+	return false;
+
+});
+
+$('.card').click(function() {
+getArticle(this.getAttribute("data-id"));
+console.log(this.getAttribute("data-id"));
+});
+        });
+
+</script>
+</head>
+
+
+
+<header>
+
+    <div class="row">
+        <div class="topnav" id="myTopnav">
+            <a href="#index.html" class="active">Home</a>
+            <a href="#about">About</a>
+            <a href="#contacto">Contact</a>
+            <a href="#news">News</a>
+            
+            
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+              <i class="fa fa-bars"></i>
+            </a>
+
+            <div class="col-sm-12">
+                <img class="image-logo-nav" src="images/bakery.png" alt="iBakery Logo">
+                <img class="name-logo" src="images/logo.png" alt="iBakery Logo name">
+            </div>
+
+        </div>
+
+          <script>
+            function myFunction() {
+              var x = document.getElementById("myTopnav");
+              if (x.className === "topnav") {
+                x.className += " responsive";
+              } else {
+                x.className = "topnav";
+              }
+            }
+            </script>
+      
+    </div>
+</header>
+
+
+
+<body>
+    <div class="parallax-hero">
+        <div class="col-sm-12">
+            <img class="image-logo" src="images/bakery.png" alt="iBakery Logo">
+        </div>
+        <div class="col-sm-12">
+            <div class="hero-header">
+            <h2>Savour Artistic Delights</h2>
+        </div>
+        </div>
+        
+    </div>
+
+    <div class="section-banner-introduction">
+        <div id="about">
+
+            <div class="col-sm-12">
+                <h1>Explore Exquisite Delights at iBakery</h1>
+                <p>Welcome to iBakery, your portal to a world of exquisite delights. Our artisanal pastries, custom cakes, and gourmet treats are crafted with passion and precision, ensuring each bite is a celebration. Immerse yourself in the artistry of flavours as we bring you a unique culinary experience. Whether you're savouring our signature pastries or marking special occasions with our custom-designed cakes, iBakery promises a journey of taste and art. Discover the symphony of flavours, where every creation tells a delicious story. At iBakery, we blend tradition with innovation to deliver unparalleled sweetness. Welcome, and let the extraordinary journey commence.</p>
+
+                <h3>Our Creation from Our Dedicated Staff</h3>
+                <p>Immerse yourself in the artistic flair and culinary excellence of our dedicated iBakery team. Our carousel showcases a delightful array of creations, each a testament to the collective skill and passion embedded in every member. From exquisite pastries to meticulously crafted custom cakes, our team pours their heart into every bake. Scroll through to witness the diverse talents within our iBakery family, and let the visual feast inspire your next indulgence.</p>
+
+                <div id="pastries-artwork" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                      <button type="button" data-bs-target="#pastries-artwork" data-bs-slide-to="0" class="active"></button>
+                      <button type="button" data-bs-target="#pastries-artwork" data-bs-slide-to="1"></button>
+                      <button type="button" data-bs-target="#pastries-artwork" data-bs-slide-to="2"></button>
+                    </div>
+                  
+                   
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <img src="images/bakery-carousel.jpg" alt="bread" class="d-block w-100">
+                      </div>
+                      <div class="carousel-item">
+                        <img src="images/bakery-carousel-1.jpg" alt="pastries" class="d-block w-100">
+                      </div>
+                      <div class="carousel-item">
+                        <img src="images/bakery-carousel-2.jpg" alt="Polish Pastries" class="d-block w-100">
+                      </div>
+                    </div>
+                  
+                    
+                    <button class="carousel-control-prev" type="button" data-bs-target="#pastries-artwork" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#pastries-artwork" data-bs-slide="next">
+                      <span class="carousel-control-next-icon"></span>
+                    </button>
+                  </div>
+
+                  <h4>Custom Cake Design</h4>
+                  <p class="description-cake">Celebrate your special moments with our bespoke custom cake service. Our talented bakers create unique, personalised masterpieces for every occasion.</p>
+                  <div id="custom-cake-artwork" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                      <button type="button" data-bs-target="#custom-cake-artwork" data-bs-slide-to="0" class="active"></button>
+                      <button type="button" data-bs-target="#custom-cake-artwork" data-bs-slide-to="1"></button>
+                      <button type="button" data-bs-target="#custom-cake-artwork" data-bs-slide-to="2"></button>
+                    </div>
+                  
+                   
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <img src="images/cake-carousel.jpg" alt="cake" class="d-block w-100">
+                      </div>
+                      <div class="carousel-item">
+                        <img src="images/cake-carousel-1.jpg" alt="halloween cake" class="d-block w-100">
+                      </div>
+                      <div class="carousel-item">
+                        <img src="images/cake-carousel-2.png" alt="Christmas Pastries" class="d-block w-100">
+                      </div>
+                    </div>
+                  
+                    
+                    <button class="carousel-control-prev" type="button" data-bs-target="#custom-cake-artwork" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#custom-cake-artwork" data-bs-slide="next">
+                      <span class="carousel-control-next-icon"></span>
+                    </button>
+                  </div>
+
+                  <h4>Seasonal Specials</h4>
+                  <p class="description-cake">Experience the changing seasons with our exclusive seasonal specials. From festive treats to summer delights, our menu evolves to match the flavours of the moment.</p>
+                  <div id="custom-seasonal-artwork" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                      <button type="button" data-bs-target="#custom-seasonal-artwork" data-bs-slide-to="0" class="active"></button>
+                      <button type="button" data-bs-target="#custom-seasonal-artwork" data-bs-slide-to="1"></button>
+                      <button type="button" data-bs-target="#custom-seasonal-artwork" data-bs-slide-to="2"></button>
+                    </div>
+                  
+                   
+                    <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <img src="images/seasonal-cakes.jpg" alt="seasonal cake" class="d-block w-100">
+                      </div>
+                      <div class="carousel-item">
+                        <img src="images/seasonal-cakes-1.jpg" alt="christmas cake 1" class="d-block w-100">
+                      </div>
+                      <div class="carousel-item">
+                        <img src="images/seasonal-cakes-2.jpg" alt="Valentine Cake" class="d-block w-100">
+                      </div>
+                    </div>
+                  
+                    
+                    <button class="carousel-control-prev" type="button" data-bs-target="#custom-seasonal-artwork" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#custom-seasonal-artwork" data-bs-slide="next">
+                      <span class="carousel-control-next-icon"></span>
+                    </button>
+                  </div>
+
+
+                  
+            </div>
+            
+        </div>
+
+        <div id="contact">
+            <div class="col-sm-12">
+                <h1>Contact Us</h1>
+                <p>Have a question or want to place an order? We're here to help! Reach out to us through the options below:</p>
+                <div class="the-contacts">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <img class="contact-images"src="images/phone-icon.png" alt="phone number"> <p>123-456-789-X</p>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <img class="contact-images"src="images/email-icon.png" alt="phone number"> <p>contact@ibakery.com</p>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <img class="contact-images-address"src="images/address.png" alt="phone number"> <p>42 High Street, <br>London, UK</p>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <p>If you'd rather not call, feel free to complete the form below, and we'll respond to your inquiry at our earliest convenience.</p>
+
+
+                <div class="send-message">
+                    <form class="contact-message" action="#" method="post" onsubmit="submitMessage(event)">
+                      <legend>Send us a message</legend>
+                      <input type="text" id="fname" name="fname" placeholder="Name">
+                      <input type="text" id="email" name="email" placeholder="Email address">
+                      <br>
+                      <input type="text" id="message" name="message" placeholder="Your message">
+                      <br>
+                      <button type="submit">Send</button>
+                      <div id="submission-message"></div>
+                    </form>
+                  </div>
+
+                  <script>
+                    function submitMessage(event) {
+                        event.preventDefault();
+                
+                        
+                        let fname = document.getElementById("fname").value;
+                        let email = document.getElementById("email").value;
+                        let message = document.getElementById("message").value;
+                
+                        if (fname.trim() === '' || email.trim() === '' || message.trim() === '') {
+                            
+                            let submissionMessage = document.getElementById("submission-message");
+                            submissionMessage.textContent = "Please fill in all fields";
+                        } else {
+                            
+                            let values = {
+                                fname: fname,
+                                email: email,
+                                message: message
+                            };
+                
+                            let submissionMessage = document.getElementById("submission-message");
+                            submissionMessage.style.color = '#5DD539';
+                            submissionMessage.textContent = "Form submitted successfully";
+                        }
+                    }
+          </script> 
+
+
+            </div>
+        </div>
+
+        <div id="news">
+            <h1>Latest News</h1>
+                <div class="row">
+                    <div class="card-group" >
+                        <div class="card c1" style="padding:10px; background-color: #000000; color: #FFFFFF;">
+                          <img class="card-img-top" src="..." alt="Card image cap">
+                          <div class="card-body">
+                            <h5 class="card-title headline">Card title</h5>
+                            <p class="card-text trailText" style="font-size: 18px;">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <p class="card-text"><small class="text-muted firstPublicationDate">Last updated 3 mins ago</small></p>
+                          </div>
+                        </div>
+                        <div class="card c2"  style="padding:10px; background-color: #000000; color: #FFFFFF;">
+                          <img class="card-img-top" src="..." alt="Card image cap">
+                          <div class="card-body">
+                            <h5 class="card-title headline">Card title</h5>
+                            <p class="card-text trailText" style="font-size: 18px;">This card has supporting text below as a natural lead-in to additional content.</p>
+                            <p class="card-text"><small class="text-muted firstPublicationDate">Last updated 3 mins ago</small></p>
+                          </div>
+                        </div>
+                        <div class="card c3" style="padding:10px; background-color: #000000; color: #FFFFFF;">
+                          <img class="card-img-top" src="..." alt="Card image cap">
+                          <div class="card-body">
+                            <h5 class="card-title headline">Card title</h5>
+                            <p class="card-text trailText" style="font-size: 18px;">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                            <p class="card-text"><small class="text-muted firstPublicationDate">Last updated 3 mins ago</small></p>
+                          </div>
+                        </div>
+                          
+                          
+                      </div>
+
+                      <div id="article" class="card" style="display:none" >
+                        <a href="index.html" style="background-color: #000000; font-weight: bold;"> Go Back </a>
+                        <img class="card-img-top" src="..." alt="Card image cap" >
+                        <div class="card-body">
+                            <h5 class="card-title headline" style="text-align: center; font-size: 45px; margin-bottom: 55px;">Card title</h5>
+                            <p class="card-text trailText">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <p class="card-text bodyText" style="padding: 0;">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <p class="card-text"><small class="text-muted firstPublicationDate">Last updated 3 mins ago</small></p>
+                            <button type="button" id="back">
+                                <a href="index.html">Back </a>
+                            </button>		
+                        
+                    </div>
+                     
+                  </div>	
+
+                  <nav aria-label="Page navigation example" id="scroll">
+                    <ul class="pagination justify-content-center">
+                      <li class="page-item" >
+                        <a id="prev" class="page-link" href="#" tabindex="-1" style="background-color: #000000; color: #FFFFFF;">Previous</a>
+                      </li>
+                      <li class="page-item"><a id="pageNo" class="page-link" href="#" style="background-color: #000000; color: #FFFFFF;">1</a></li>
+                  
+                      <li class="page-item">
+                        <a id="next" class="page-link" href="#" style="background-color: #000000; color: #FFFFFF;">Next</a>
+                      </li>
+                    </ul>
+                      
+                  </nav>	
+        </div>
+        
+    </div>
+    
+
+</body>
+
+
+
+<footer>
+<ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="index.html"><img class="logo-footer" src="images/bakery.png" alt="iBakery"></a></li>
+    <li><a href="index.html"><img class="logo-footer" src="images/logo.png" alt="iBakery"></a></li>
+</ul>
+
+
+</footer>
+</html>
